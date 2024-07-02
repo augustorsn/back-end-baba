@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.github.augustorsn.back_end_baba.domain.Cliente;
 import io.github.augustorsn.back_end_baba.repository.Clientes;
+import io.github.augustorsn.back_end_baba.repository.ClientesJpa;
 
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -28,17 +29,28 @@ public class BackEndBabaApplication {
 
 
 	@Bean
-	public CommandLineRunner init(@Autowired Clientes clientes){
+	public CommandLineRunner init(@Autowired ClientesJpa clientes){
 		return args -> {			
 			clientes.salvar(new Cliente("Guto"));
 			clientes.salvar(new Cliente("augusto"));
 			
 			List<Cliente> todos = clientes.obterTodos();
 			todos.forEach(System.out::println);
-
-			List<Cliente> todos2 = clientes.obterPorId(1);
-		
+			clientes.deleteForId(2);
+			List<Cliente> todos2 = clientes.obterTodos();
 			todos2.forEach(System.out::println);
+			List<Cliente> listaCliente = clientes.buscarPorNome("Guto");
+			if(listaCliente.size() >=1){
+				Cliente c = listaCliente.get(0);
+				c.setNome("Feio");
+				clientes.update(c);
+				List<Cliente> todos3 = clientes.obterTodos();
+				todos3.forEach(System.out::println);
+				
+			}
+			
+
+			
 		};
 	}
 	public static void main(String[] args) {
