@@ -11,7 +11,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.github.augustorsn.back_end_baba.domain.Cliente;
-import io.github.augustorsn.back_end_baba.repository.Clientes;
 import io.github.augustorsn.back_end_baba.repository.ClientesJpa;
 
 import org.springframework.web.bind.annotation.GetMapping;
