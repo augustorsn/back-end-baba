@@ -1,7 +1,11 @@
 package io.github.augustorsn.back_end_baba;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
+import io.github.augustorsn.back_end_baba.domain.Pedido;
+import io.github.augustorsn.back_end_baba.repository.PedidoJpa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -28,34 +32,21 @@ public class BackEndBabaApplication {
 
 
 	@Bean
-	public CommandLineRunner init(@Autowired ClientesJpa clientes){
+	public CommandLineRunner init(@Autowired ClientesJpa clientes, @Autowired PedidoJpa pedidos){
 		return args -> {			
-			clientes.save(new Cliente("Guto"));
-			clientes.save(new Cliente("augusto"));
-			clientes.save(new Cliente("Ana"));
-			clientes.save(new Cliente("Jade"));
+			System.out.println("Salvando Clientes");
+			Cliente fulano = new Cliente("Fulano");
+			clientes.save(fulano);
+			Pedido p = new Pedido();
+			p.setCliente(fulano);
+			p.setDataPedido(LocalDate.now());
+			p.setTotal(BigDecimal.valueOf(150));
+			pedidos.save(p);
+//			Cliente result = clientes.findClienteFetchPedidos(fulano.getId());
+//			System.out.println("Clientes"+ result);
 
+			pedidos.findByCliente(fulano).forEach(System.out::println);
 
-			List<Cliente> todos = clientes.findAll();
-			todos.forEach(System.out::println);
-
-			clientes.deleteById(2);
-			clientes.deleteByNomeLike("Jade");
-			List<Cliente> todos2 = clientes.findAll();
-			todos2.forEach(System.out::println);
-			List<Cliente> listaCliente = clientes.findByNomeLike("Guto");
-			List<Cliente> listaCliente2 = clientes.encontratPorNome("Guto");
-			List<Cliente> listaCliente3 = clientes.encontrarPorNomeNativeSql("Guto");
-			if(listaCliente.size() >=1 || listaCliente2.size()>=1 || listaCliente3.size()>=1 ){
-				Cliente c = listaCliente.get(0);
-				c.setNome("Feio");
-				clientes.save(c);
-				List<Cliente> todos3 = clientes.findAll();
-				todos3.forEach(System.out::println);
-				boolean existe = clientes.existsByNome("Feio");
-				System.out.println("existe cliente feio = "+ existe);
-			}
-			
 
 			
 		};

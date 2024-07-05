@@ -26,7 +26,7 @@ public class Pedido {
     private List<ItemPedido> itemsPedido;
 
 
-    @Column(name = "total", length = 20,precision = 2)
+    @Column(name = "total", scale=2,precision = 20)
     private BigDecimal total;
 
     public List<ItemPedido> getItemsPedido() {
@@ -67,5 +67,15 @@ public class Pedido {
 
     public void setTotal(BigDecimal total) {
         this.total = total;
+    }
+
+    @Override
+    public String toString() {
+        return "Pedido{" +
+                "id=" + id +
+                ", cliente=" + cliente.getNome() +
+                ", dataPedido=" + dataPedido +
+                ", total=" + total +
+                '}';
     }
 }
