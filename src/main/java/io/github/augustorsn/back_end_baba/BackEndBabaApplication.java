@@ -46,7 +46,8 @@ public class BackEndBabaApplication {
 				clientes.save(c);
 				List<Cliente> todos3 = clientes.findAll();
 				todos3.forEach(System.out::println);
-
+				boolean existe = clientes.existsByNome("Feio");
+				System.out.println("existe cliente feio = "+ existe);
 			}
 			
 
