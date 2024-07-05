@@ -24,4 +24,8 @@ public interface ClientesJpa  extends JpaRepository<Cliente, Integer> {
 
     @Query(value="select c from Cliente c where c.nome like :nome")
     List<Cliente> encontratPorNome(@Param("nome") String nome);
+
+
+    @Query(value="select * from Cliente c where c.nome like '%:nome%'",nativeQuery = true)
+    List<Cliente> encontrarPorNomeNativeSql(@Param("nome") String nome);
 }

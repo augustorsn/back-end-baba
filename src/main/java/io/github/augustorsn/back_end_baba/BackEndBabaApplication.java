@@ -40,7 +40,9 @@ public class BackEndBabaApplication {
 			List<Cliente> todos2 = clientes.findAll();
 			todos2.forEach(System.out::println);
 			List<Cliente> listaCliente = clientes.findByNomeLike("Guto");
-			if(listaCliente.size() >=1){
+			List<Cliente> listaCliente2 = clientes.encontratPorNome("Guto");
+			List<Cliente> listaCliente3 = clientes.encontrarPorNomeNativeSql("Guto");
+			if(listaCliente.size() >=1 && listaCliente2.size()>=1 && listaCliente3.size()>=1 ){
 				Cliente c = listaCliente.get(0);
 				c.setNome("Feio");
 				clientes.save(c);
