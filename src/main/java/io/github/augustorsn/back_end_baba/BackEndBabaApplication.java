@@ -31,22 +31,22 @@ public class BackEndBabaApplication {
 	@Bean
 	public CommandLineRunner init(@Autowired ClientesJpa clientes){
 		return args -> {			
-			clientes.salvar(new Cliente("Guto"));
-			clientes.salvar(new Cliente("augusto"));
-			
-			List<Cliente> todos = clientes.obterTodos();
+			clientes.save(new Cliente("Guto"));
+			clientes.save(new Cliente("augusto"));
+
+			List<Cliente> todos = clientes.findAll();
 			todos.forEach(System.out::println);
-			clientes.deleteForId(2);
-			List<Cliente> todos2 = clientes.obterTodos();
+			clientes.deleteById(2);
+			List<Cliente> todos2 = clientes.findAll();
 			todos2.forEach(System.out::println);
-			List<Cliente> listaCliente = clientes.buscarPorNome("Guto");
+			List<Cliente> listaCliente = clientes.findByNomeLike("Guto");
 			if(listaCliente.size() >=1){
 				Cliente c = listaCliente.get(0);
 				c.setNome("Feio");
-				clientes.update(c);
-				List<Cliente> todos3 = clientes.obterTodos();
+				clientes.save(c);
+				List<Cliente> todos3 = clientes.findAll();
 				todos3.forEach(System.out::println);
-				
+
 			}
 			
 
