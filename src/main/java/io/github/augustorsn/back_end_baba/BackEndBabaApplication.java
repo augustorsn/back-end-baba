@@ -19,17 +19,12 @@ import io.github.augustorsn.back_end_baba.repository.ClientesJpa;
 
 import org.springframework.web.bind.annotation.GetMapping;
 
+
+// @ComponentScan(basePackages = { "io.github.augustorsn.back_end_baba.repository",
+// 		"io.github.augustorsn.back_end_baba.service" })
+// @RestController
 @SpringBootApplication
-@ComponentScan(basePackages = { "io.github.augustorsn.back_end_baba.repository",
-		"io.github.augustorsn.back_end_baba.service" })
-@RestController
 public class BackEndBabaApplication {
-
-	@GetMapping("/hello")
-	public String helloWorld() {
-		return "Neymar";
-	}
-
 
 //	@Bean
 //	public CommandLineRunner init(@Autowired ClientesJpa clientes, @Autowired PedidoJpa pedidos){
