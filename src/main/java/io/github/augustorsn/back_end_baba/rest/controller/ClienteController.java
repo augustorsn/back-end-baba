@@ -1,7 +1,11 @@
 package io.github.augustorsn.back_end_baba.rest.controller;
 
+import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +18,8 @@ import io.github.augustorsn.back_end_baba.domain.Cliente;
 import io.github.augustorsn.back_end_baba.repository.ClientesJpa;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 public class ClienteController {
@@ -68,6 +74,26 @@ public class ClienteController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+  
+ 
+    
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @GetMapping("/api/clientes")
+    @ResponseBody
+    public ResponseEntity find(Cliente filtro){
+        
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                                                .withIgnoreCase()
+                                                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+        Example example = Example.of(filtro,matcher);
+        List<Cliente> lista = clientes.findAll(example);
+        return ResponseEntity.ok(lista);
+
+
+
+        
     }
 
 }
