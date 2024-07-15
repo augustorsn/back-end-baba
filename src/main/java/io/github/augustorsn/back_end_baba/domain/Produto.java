@@ -1,11 +1,22 @@
 package io.github.augustorsn.back_end_baba.domain;
 
-import jakarta.persistence.*;
-
 import java.math.BigDecimal;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "produto")
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class Produto {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,30 +27,5 @@ public class Produto {
     private String descricao;
 
     @Column(name = "preco_unitario")
-    private BigDecimal preco;
-
-    public Integer getId() {
-        return this.id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getDescricao() {
-        return this.descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public BigDecimal getPreco() {
-        return this.preco;
-    }
-
-    public void setPreco(BigDecimal preco) {
-        this.preco = preco;
-    }
-    
+    private BigDecimal preco;    
 }

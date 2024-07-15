@@ -1,13 +1,26 @@
 package io.github.augustorsn.back_end_baba.domain;
 
-import jakarta.persistence.*;
-
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Entity
 @Table(name = "cliente")
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class Cliente {
 
     @Id
@@ -55,27 +68,6 @@ public class Cliente {
 
     public void setPedidos(Set<Pedido> pedidos) {
         this.pedidos = pedidos;
-    }
-
-    public Cliente() {
-    }
-
-    public Cliente(String nome) {
-        this.nome = nome;
-    }
-
-    public Cliente(Integer id, String nome) {
-        this.id = id;
-        this.nome = nome;
-    }
-
-    @Override
-    public String toString() {
-        return "{" +
-                " id='" + getId() + "'" +
-                ", nome='" + getNome() + "'" +
-                ", pedidos='" + getPedidos() + "'" +
-                "}";
     }
 
 }
