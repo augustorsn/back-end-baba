@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import io.github.augustorsn.back_end_baba.domain.Produto;
+import io.github.augustorsn.back_end_baba.exception.RegraNegocioException;
 import io.github.augustorsn.back_end_baba.repository.ProdutoJpa;
 
 @RestController
@@ -32,34 +32,30 @@ public class ProdutoController {
 
     @GetMapping("{id}")
     public Produto getProdutoById(@PathVariable Integer id) {
-        Optional<Produto> produto = produtos.findById(id);
-        if (produto.isPresent()) {
-            return produto.get();
-        }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "produto não encontrado");
+        Produto p = produtos.findById(id)
+        .orElseThrow(() -> new RegraNegocioException("produto não encontrado"));
+        return p;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Produto saveProduto(@RequestBody Produto produto) {
         try {
-            return produtos.save(produto);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "produto não encontrado");
+             produtos.save(produto);
+             return produto;
+        } catch (RuntimeException e) {
+            throw new RegraNegocioException("produto não encontrado");
         }
     }
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Integer id) {
-        try {
-            Optional<Produto> p = produtos.findById(id);
-            if (p.isPresent()) {
-                produtos.delete(p.get());
-            }
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi possível deletar o produto");
-        }
+
+        Produto p = produtos.findById(id)
+                .orElseThrow(() -> new RegraNegocioException("Não foi possível deletar o produto"));
+        produtos.delete(p);
+
     }
 
     @PutMapping("{id}")
@@ -73,7 +69,7 @@ public class ProdutoController {
                 produtos.save(produto);
             }
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi possível atualizar o produto");
+            throw new RegraNegocioException("Não foi possível atualizar o produto");
         }
     }
 
@@ -88,7 +84,7 @@ public class ProdutoController {
             List<Produto> lista = produtos.findAll(example);
             return lista;
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi possível listar o produto");
+            throw new RegraNegocioException("Não foi possível listar o produto");
         }
     }
 
