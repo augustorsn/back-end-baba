@@ -13,6 +13,7 @@ import io.github.augustorsn.back_end_baba.domain.ItemPedido;
 import io.github.augustorsn.back_end_baba.domain.Pedido;
 import io.github.augustorsn.back_end_baba.domain.Produto;
 import io.github.augustorsn.back_end_baba.enums.StatusPedido;
+import io.github.augustorsn.back_end_baba.exception.PedidoNaoEncontradoException;
 import io.github.augustorsn.back_end_baba.exception.RegraNegocioException;
 import io.github.augustorsn.back_end_baba.repository.ClientesJpa;
 import io.github.augustorsn.back_end_baba.repository.ItemPedidoJpa;
@@ -74,7 +75,21 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     public Optional<Pedido> obterPedidoCompleto(Integer id) {
-        return pedidoRepository.findByIdFetchItens(id);        
+        return pedidoRepository.findByIdFetchItens(id);
+    }
+
+   
+    @Override
+    public void atualizarPedido(Integer id, StatusPedido statusNovo) {
+       pedidoRepository.findById(id)
+                .map(p -> {
+                    p.setStatus(statusNovo);
+                    pedidoRepository.save(p);
+                    return p;
+                })
+                .orElseThrow(() -> new PedidoNaoEncontradoException("Pedido não encontrado"));
+
+       
     }
 
 }

@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +19,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import io.github.augustorsn.back_end_baba.domain.ItemPedido;
 import io.github.augustorsn.back_end_baba.domain.Pedido;
+import io.github.augustorsn.back_end_baba.enums.StatusPedido;
+import io.github.augustorsn.back_end_baba.rest.dto.AtualizacaoStatusPedidoDTO;
 import io.github.augustorsn.back_end_baba.rest.dto.InfoItensPedidoDTO;
 import io.github.augustorsn.back_end_baba.rest.dto.InfoPedidoDTO;
 import io.github.augustorsn.back_end_baba.rest.dto.PedidoDTO;
@@ -27,10 +30,9 @@ import io.github.augustorsn.back_end_baba.service.impl.PedidoServiceImpl;
 @RequestMapping("/api/pedidos")
 public class PedidoController {
     private PedidoServiceImpl service;
-    
 
     public PedidoController(PedidoServiceImpl service) {
-        this.service = service;        
+        this.service = service;
     }
 
     @PostMapping
@@ -51,6 +53,14 @@ public class PedidoController {
                 .map(p -> converter(p))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "pedido não encontrado"));
 
+    }
+
+    @PatchMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateStatus(@PathVariable Integer id,@RequestBody AtualizacaoStatusPedidoDTO atualizacao) {
+        String novoStatus = atualizacao.getNovoStatus();
+         service.atualizarPedido(id,StatusPedido.valueOf(novoStatus));
+    
     }
 
     private InfoPedidoDTO converter(Pedido p) {
