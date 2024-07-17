@@ -12,6 +12,7 @@ import io.github.augustorsn.back_end_baba.domain.Cliente;
 import io.github.augustorsn.back_end_baba.domain.ItemPedido;
 import io.github.augustorsn.back_end_baba.domain.Pedido;
 import io.github.augustorsn.back_end_baba.domain.Produto;
+import io.github.augustorsn.back_end_baba.enums.StatusPedido;
 import io.github.augustorsn.back_end_baba.exception.RegraNegocioException;
 import io.github.augustorsn.back_end_baba.repository.ClientesJpa;
 import io.github.augustorsn.back_end_baba.repository.ItemPedidoJpa;
@@ -40,6 +41,7 @@ public class PedidoServiceImpl implements PedidoService {
 
         Pedido p = new Pedido();
         p.setCliente(c);
+        p.setStatus(StatusPedido.REALIZADO);
         p.setTotal(pedido.getTotal());
         p.setDataPedido(LocalDate.now());
         List<ItemPedido> ip = this.converterItens(p, pedido.getItens());
