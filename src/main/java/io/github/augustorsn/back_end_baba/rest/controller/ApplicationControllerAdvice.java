@@ -16,6 +16,9 @@ public class ApplicationControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiErrors handleRegraNegocioException(RegraNegocioException ex){
         String msgErro = ex.getMessage();
+        if(msgErro.isBlank() || msgErro.isEmpty()){
+            msgErro = "Erro inseperado";
+        }
         return new ApiErrors(msgErro);
     }
 }
