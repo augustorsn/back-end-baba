@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import io.github.augustorsn.back_end_baba.domain.Cliente;
 import io.github.augustorsn.back_end_baba.repository.ClientesJpa;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/clientes")
@@ -42,13 +42,8 @@ public class ClienteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Cliente save(@RequestBody Cliente cliente) {
-        try {
-            return clientes.save(cliente);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi possível salvar o cliente");
-        }
-
+    public Cliente save(@RequestBody @Valid Cliente cliente) {
+        return clientes.save(cliente);
     }
 
     @DeleteMapping("{id}")
@@ -66,14 +61,14 @@ public class ClienteController {
 
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable Integer id, @RequestBody Cliente cliente) {
+    public void update(@PathVariable Integer id, @RequestBody @Valid Cliente cliente) {
 
         try {
             Optional<Cliente> c = clientes.findById(id);
             if (c.isPresent()) {
                 cliente.setId(c.get().getId());
                 clientes.save(cliente);
-            }            
+            }
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi possível atualizar o cliente");
         }
@@ -93,7 +88,7 @@ public class ClienteController {
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi possível listar o cliente");
         }
-        
+
     }
 
 }

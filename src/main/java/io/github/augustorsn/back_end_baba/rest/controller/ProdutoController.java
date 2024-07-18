@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.github.augustorsn.back_end_baba.domain.Produto;
 import io.github.augustorsn.back_end_baba.exception.RegraNegocioException;
 import io.github.augustorsn.back_end_baba.repository.ProdutoJpa;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/produtos")
@@ -33,19 +34,17 @@ public class ProdutoController {
     @GetMapping("{id}")
     public Produto getProdutoById(@PathVariable Integer id) {
         Produto p = produtos.findById(id)
-        .orElseThrow(() -> new RegraNegocioException("produto não encontrado"));
+                .orElseThrow(() -> new RegraNegocioException("produto não encontrado"));
         return p;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Produto saveProduto(@RequestBody Produto produto) {
-        try {
-             produtos.save(produto);
-             return produto;
-        } catch (RuntimeException e) {
-            throw new RegraNegocioException("produto não encontrado");
-        }
+    public Produto saveProduto(@RequestBody @Valid Produto produto) {
+
+        produtos.save(produto);
+        return produto;
+
     }
 
     @DeleteMapping("{id}")
@@ -60,7 +59,7 @@ public class ProdutoController {
 
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable Integer id, @RequestBody Produto produto) {
+    public void update(@PathVariable Integer id, @RequestBody @Valid Produto produto) {
 
         try {
             Optional<Produto> p = produtos.findById(id);

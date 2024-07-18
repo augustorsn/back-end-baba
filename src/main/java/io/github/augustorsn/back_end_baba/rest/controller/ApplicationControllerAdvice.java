@@ -1,6 +1,10 @@
 package io.github.augustorsn.back_end_baba.rest.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -31,5 +35,12 @@ public class ApplicationControllerAdvice {
             msgErro = "Erro inseperado";
         }
         return new ApiErrors(msgErro);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiErrors handleMethodArgumentNotValidException(MethodArgumentNotValidException ex){
+        List<String> erros =  ex.getBindingResult().getAllErrors().stream().map( e-> e.getDefaultMessage()).collect(Collectors.toList());
+        return new ApiErrors(erros);
     }
 }
